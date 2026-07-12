@@ -4,9 +4,13 @@ service firebase.storage {
     match /items/{imageId} {
       // Anyone can view uploaded item images
       allow read: if true;
-      // Only authenticated users can upload item images
-      // Further restriction can be added to validate the file size and type
-      allow write: if request.auth != null;
+      // Only authenticated users can upload item images, restricted to 5MB images
+      allow create, update: if request.auth != null 
+                            && request.resource.size < 5 * 1024 * 1024 // 5MB limit
+                            && request.resource.contentType.matches('image/.*');
+      // Only the uploader can delete the image (enforced via naming convention uid_timestamp_filename)
+      allow delete: if request.auth != null 
+                    && imageId.matches('^' + request.auth.uid + '_.*');
     }
   }
 }

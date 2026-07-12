@@ -6,6 +6,7 @@ This file contains custom rules and behavioral guidelines for the AI agent to fo
 - **Context Management:** If any requested feature, idea, or information is not relevant to the current milestone or scope, add it to the `todo.md` file in the root directory rather than implementing it immediately. Use markdown checkboxes `[ ]`.
 - **Coding Standards:** Follow best practices and standard conventions for the chosen tech stack. Code should be clean, modular, and well-documented. Do not skip testing.
 - **Documentation First:** Document any architectural including tech stack decisions or complex logic in the appropriate `.md` files before implementation to maintain alignment with the project plan.  At the end of every session, update AGENTS.md, agentic-harness.md, for any learnings or followups.  Also update requirements.md, project-management.md, architecture.md, tech-stack.md and weekly-plan.md if anything changes.
+- **Raise MR:** When the task implementation is complete, ask the user whether to raise an MR.  
 
 ## Firebase
 Always look for and use the appropriate **Firebase agent skills** to perform tasks related to Firebase.
@@ -19,3 +20,12 @@ Set up and use Email/password Authentication.
 Use my existing Firebase project: 509636494210
 
 Make sure to register a web app in that project and set up my app's codebase to use Firebase.
+
+## Session Follow-ups & Learnings
+- **[2026-07-12] Session Closed**: Successfully completed Phase 4.3 (Part 1). Implemented public database search and UI filtering for lost and found items using a hybrid Firestore + client-side approach. The next session will focus on Phase 4.3 (Part 2): Implement an AI-powered matching algorithm.
+
+## Raise MR
+When raising an MR, ensure to use the `gh` agent to create an MR with a proper title and description.  MR description should include:
+  - What was done
+  - How it was done
+  - What was verified

@@ -1,13 +1,35 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    function isValidItem(item) {
+      return item.keys().hasAll(['type', 'title', 'category', 'description', 'date', 'location', 'status', 'reportedBy', 'createdAt']) &&
+             item.title is string && item.title.size() > 0 && item.title.size() < 100 &&
+             item.category is string && item.category.size() < 50 &&
+             item.description is string && item.description.size() < 2000 &&
+             item.date is string &&
+             item.location is string && item.location.size() < 200 &&
+             item.status in ['open', 'resolved', 'closed'] &&
+             (item.type == 'lost' || item.type == 'found') &&
+             (!item.keys().hasAny(['imageUrl']) || item.imageUrl == null || item.imageUrl is string) &&
+             item.createdAt != null;
+    }
+
     match /items/{itemId} {
       // Anyone can read items
       allow read: if true;
       // Only authenticated users can create, and must set reportedBy to themselves
-      allow create: if request.auth != null && request.resource.data.reportedBy == request.auth.uid;
-      // Only the user who reported the item can update or delete it
-      allow update, delete: if request.auth != null && resource.data.reportedBy == request.auth.uid;
+      allow create: if request.auth != null && 
+                    request.resource.data.reportedBy == request.auth.uid &&
+                    isValidItem(request.resource.data);
+      // Only the user who reported the item can update it, and cannot change ownership
+      allow update: if request.auth != null && 
+                    resource.data.reportedBy == request.auth.uid &&
+                    request.resource.data.reportedBy == request.auth.uid &&
+                    isValidItem(request.resource.data);
+      // Only the user who reported the item can delete it
+      allow delete: if request.auth != null && 
+                    resource.data.reportedBy == request.auth.uid;
     }
   }
 }
