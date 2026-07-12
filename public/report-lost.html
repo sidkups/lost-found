@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Lost Item - Lost & Found</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">Lost<span>&</span>Found</a>
+            <div id="userNav" class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="glass-card">
+            <h2>Report a Lost Item</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.8;">Please provide as much detail as possible to help others identify your item.</p>
+            
+            <form id="reportLostForm">
+                <input type="hidden" id="itemType" value="lost">
+                
+                <div class="form-group">
+                    <label for="itemTitle" class="form-label">Item Name</label>
+                    <input type="text" id="itemTitle" class="form-input" required placeholder="e.g. Blue iPhone 13">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemCategory" class="form-label">Category</label>
+                    <select id="itemCategory" class="form-input" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="electronics">Electronics & Phones</option>
+                        <option value="keys">Keys</option>
+                        <option value="wallet">Wallet & Cards</option>
+                        <option value="clothing">Clothing & Accessories</option>
+                        <option value="pets">Pets</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemDescription" class="form-label">Description & Distinctive Features</label>
+                    <textarea id="itemDescription" class="form-input" rows="4" required placeholder="Describe scratches, cases, lock screen wallpaper, etc."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemDate" class="form-label">Date Lost</label>
+                    <input type="date" id="itemDate" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemLocation" class="form-label">Approximate Location</label>
+                    <input type="text" id="itemLocation" class="form-input" required placeholder="e.g. Central Park, near the main fountain">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemImage" class="form-label">Upload Image (Optional)</label>
+                    <input type="file" id="itemImage" class="form-input" accept="image/*">
+                </div>
+
+                <div id="reportError" class="error-message hidden"></div>
+                <div id="reportSuccess" style="color: #4ade80; margin-bottom: 1rem;" class="hidden"></div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="reportSubmitBtn">Submit Report</button>
+                    <a href="dashboard.html" class="btn btn-outline" style="text-decoration: none; text-align: center;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/items.js"></script>
+</body>
+</html>

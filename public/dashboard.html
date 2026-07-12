@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Lost & Found</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">Lost<span>&</span>Found</a>
+            <div id="userNav" class="nav-links">
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="mb-4">Welcome to your Dashboard</h1>
+            
+            <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="glass-card text-center">
+                    <h3>Report a Lost Item</h3>
+                    <p class="mb-4">Did you lose something? Report it here so the community can help you find it.</p>
+                    <a href="report-lost.html" class="btn btn-primary" style="display: block;">Report Lost</a>
+                </div>
+                
+                <div class="glass-card text-center">
+                    <h3>Report a Found Item</h3>
+                    <p class="mb-4">Did you find something that doesn't belong to you? Report it to help it find its owner.</p>
+                    <a href="report-found.html" class="btn btn-primary" style="display: block;">Report Found</a>
+                </div>
+            </div>
+            
+            <div class="mt-4 glass-card">
+                <h2>Your Recent Reports</h2>
+                <div id="userReportsList" class="mt-4">
+                    <p class="text-center" style="opacity: 0.7;">Loading your reports...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/items.js"></script>
+</body>
+</html>

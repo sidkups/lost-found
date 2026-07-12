@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found - Reconnect with what matters</title>
+    <meta name="description" content="A premium platform to report lost items and find what you've been looking for.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">Lost<span>&</span>Found</a>
+            <div class="navbar-nav" id="authNav">
+                <a href="login.html" class="btn btn-outline" style="width: auto;">Login</a>
+                <a href="register.html" class="btn btn-primary" style="width: auto;">Register</a>
+            </div>
+            <div class="navbar-nav hidden" id="userNav">
+                <a href="dashboard.html" class="auth-link" style="margin-right: 1rem;">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-outline" style="width: auto;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container text-center" style="max-width: 800px;">
+            <h1 style="margin-bottom: 1.5rem; font-size: 3.5rem;">Find What You Lost,<br>Return What You Found.</h1>
+            <p style="font-size: 1.25rem; margin-bottom: 3rem;">A smart, community-driven platform to help reunite people with their misplaced belongings through intelligent matching.</p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="register.html" class="btn btn-primary" style="width: auto; padding: 1rem 2rem; font-size: 1.125rem;">Get Started</a>
+                <a href="login.html" class="btn btn-outline" style="width: auto; padding: 1rem 2rem; font-size: 1.125rem;">Sign In</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK Setup -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

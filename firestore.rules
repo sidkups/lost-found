@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /items/{itemId} {
+      // Anyone can read items
+      allow read: if true;
+      // Only authenticated users can create, and must set reportedBy to themselves
+      allow create: if request.auth != null && request.resource.data.reportedBy == request.auth.uid;
+      // Only the user who reported the item can update or delete it
+      allow update, delete: if request.auth != null && resource.data.reportedBy == request.auth.uid;
+    }
+  }
+}
