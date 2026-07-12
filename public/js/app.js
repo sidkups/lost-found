@@ -11,17 +11,18 @@ const firebaseConfig = {
 };
 
 // Import Firebase SDKs from CDN
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-storage.js";
+import { getAI, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-ai.js";
 
 // Initialize Firebase
 let app;
 let auth;
 let db;
 let storage;
+let ai;
 
 try {
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
@@ -29,6 +30,7 @@ try {
         auth = getAuth(app);
         db = getFirestore(app);
         storage = getStorage(app);
+        ai = getAI(app, { backend: new GoogleAIBackend() });
         console.log("Firebase initialized successfully");
     } else {
         console.warn("Firebase config is missing. Please update app.js with your project config.");
@@ -37,4 +39,4 @@ try {
     console.error("Error initializing Firebase:", error);
 }
 
-export { auth, db, storage };
+export { auth, db, storage, ai };

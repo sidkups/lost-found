@@ -153,6 +153,21 @@
         </div>
     </main>
 
+    <!-- AI Match Modal -->
+    <div id="aiMatchModal" class="modal hidden">
+        <div class="modal-content glass-card" style="max-width: 600px;">
+            <span class="close-modal" id="closeAiModal">&times;</span>
+            <h2 class="mb-4">✨ AI Smart Matches</h2>
+            <div id="aiMatchLoading" class="text-center py-4">
+                <div class="spinner"></div>
+                <p class="mt-2">Analyzing matches with Gemini AI...</p>
+            </div>
+            <div id="aiMatchResults" class="hidden">
+                <!-- Results will be injected here -->
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="js/app.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/browse.js"></script>

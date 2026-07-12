@@ -1,8 +1,24 @@
 import { auth, db } from './app.js';
-import { collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { findMatches } from './ai-matcher.js';
 
 const userReportsList = document.getElementById('userReportsList');
+
+const aiMatchModal = document.getElementById('aiMatchModal');
+const closeAiModal = document.getElementById('closeAiModal');
+const aiMatchLoading = document.getElementById('aiMatchLoading');
+const aiMatchResults = document.getElementById('aiMatchResults');
+
+if (closeAiModal) {
+    closeAiModal.onclick = () => aiMatchModal.classList.add('hidden');
+}
+
+window.addEventListener('click', (event) => {
+    if (event.target == aiMatchModal) {
+        aiMatchModal.classList.add('hidden');
+    }
+});
 
 if (auth && db) {
     onAuthStateChanged(auth, async (user) => {
@@ -119,10 +135,55 @@ const renderItemCard = (item, container) => {
                 <span>${escapeHTML(item.category)}</span>
                 <span>${date}</span>
             </div>
+            <button class="btn btn-outline ai-match-btn mt-3" data-id="${item.id}" style="width: 100%; padding: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-color: rgba(255,255,255,0.3); transition: all 0.3s ease;">✨ AI Smart Match</button>
         </div>
     `;
 
     container.appendChild(card);
+    
+    const aiMatchBtn = card.querySelector('.ai-match-btn');
+    if (aiMatchBtn) {
+        aiMatchBtn.addEventListener('click', async () => {
+            if (!aiMatchModal) return;
+            aiMatchModal.classList.remove('hidden');
+            aiMatchLoading.classList.remove('hidden');
+            aiMatchResults.classList.add('hidden');
+            aiMatchResults.innerHTML = '';
+            
+            try {
+                const matches = await findMatches(item);
+                aiMatchLoading.classList.add('hidden');
+                aiMatchResults.classList.remove('hidden');
+                
+                if (matches.length === 0) {
+                    aiMatchResults.innerHTML = '<p class="text-center opacity-70">No reasonable matches found.</p>';
+                } else {
+                    let html = '';
+                    matches.forEach(m => {
+                        const title = escapeHTML(m.candidateTitle);
+                        let badgeColor = 'background: rgba(255,255,255,0.1);';
+                        if (m.confidenceScore > 80) badgeColor = 'background: rgba(46, 213, 115, 0.2); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.5);';
+                        else if (m.confidenceScore > 50) badgeColor = 'background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid rgba(255, 165, 2, 0.5);';
+                        
+                        html += `
+                            <div class="glass-card mb-3 p-3" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2);">
+                                <h4 class="mb-2">${title}</h4>
+                                <div class="mb-2" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="badge" style="${badgeColor}">Confidence: ${m.confidenceScore}%</span>
+                                </div>
+                                <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 0;"><strong>Reasoning:</strong> ${escapeHTML(m.reasoning)}</p>
+                            </div>
+                        `;
+                    });
+                    aiMatchResults.innerHTML = html;
+                }
+            } catch (e) {
+                aiMatchLoading.classList.add('hidden');
+                aiMatchResults.classList.remove('hidden');
+                aiMatchResults.innerHTML = '<p class="text-center" style="color: #ff4757;">Error finding matches. Ensure AI Logic is initialized.</p>';
+            }
+        });
+    }
 };
 
 const escapeHTML = (str) => {
