@@ -58,12 +58,12 @@
 ### Session 1 (2 Hours): "Lost" Item Reporting
 - **Goal:** Allow users to report lost items.
 - **Tasks:**
-  - [ ] Execute **Phase 4.2 (Part 1)**: Implement backend APIs and frontend Web UI for submitting "Lost" reports.
+  - [x] Execute **Phase 4.2 (Part 1)**: Implement backend APIs and frontend Web UI for submitting "Lost" reports.
 
 ### Session 2 (2 Hours): "Found" Item Reporting
 - **Goal:** Allow users to report found items.
 - **Tasks:**
-  - [ ] Execute **Phase 4.2 (Part 2)**: Implement backend APIs and frontend Web UI for submitting "Found" reports.
+- [x] Execute **Phase 4.2 (Part 2)**: Implement backend APIs and frontend Web UI for submitting "Found" reports.
 
 ---
 
@@ -71,7 +71,7 @@
 ### Session 1 (2 Hours): Search Functionality
 - **Goal:** Enable users to find items.
 - **Tasks:**
-  - [ ] Execute **Phase 4.3 (Part 1)**: Implement database search and UI filtering for lost and found items.
+  - [x] Execute **Phase 4.3 (Part 1)**: Implement database search and UI filtering for lost and found items.
 
 ### Session 2 (2 Hours): Automated Matching
 - **Goal:** Implement the "Agentic/AI" core feature.

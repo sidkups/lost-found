@@ -1,6 +1,5 @@
-import { auth, db, storage } from './app.js';
+import { auth, db } from './app.js';
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
-import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
 // Ensure user is authenticated before allowing submission
@@ -23,8 +22,8 @@ const handleFormSubmit = async (e, form, errorEl, successEl, submitBtn) => {
         return;
     }
 
-    if (!db || !storage) {
-        showError(errorEl, "Firebase is not fully configured.");
+    if (!db) {
+        showError(errorEl, "Firebase Database is not fully configured.");
         return;
     }
 
@@ -44,18 +43,13 @@ const handleFormSubmit = async (e, form, errorEl, successEl, submitBtn) => {
 
         let imageUrl = null;
 
-        // 1. Upload Image to Firebase Storage (if provided)
+        // 1. Process Image to Base64 (if provided)
         if (imageFile) {
-            // Generate a unique filename using timestamp and UID
-            const fileName = `items/${currentUser.uid}_${Date.now()}_${imageFile.name}`;
-            const storageRef = ref(storage, fileName);
-            
-            submitBtn.textContent = 'Uploading Image...';
-            const snapshot = await uploadBytes(storageRef, imageFile);
-            imageUrl = await getDownloadURL(snapshot.ref);
+            submitBtn.textContent = 'Processing Image...';
+            imageUrl = await compressImageToBase64(imageFile, 800, 800, 0.7);
         }
 
-        // 2. Save document to Firestore
+        console.log("2. Saving document to Firestore...");
         submitBtn.textContent = 'Saving Report...';
         const itemData = {
             type: type,
@@ -70,6 +64,9 @@ const handleFormSubmit = async (e, form, errorEl, successEl, submitBtn) => {
             createdAt: serverTimestamp()
         };
 
+        console.log("Item data prepared:", itemData);
+        console.log("Calling addDoc...");
+        
         const docRef = await addDoc(collection(db, "items"), itemData);
         console.log("Document written with ID: ", docRef.id);
 
@@ -111,3 +108,54 @@ if (reportFoundForm) {
     const submitBtn = document.getElementById('reportSubmitBtn');
     reportFoundForm.addEventListener('submit', (e) => handleFormSubmit(e, reportFoundForm, errorEl, successEl, submitBtn));
 }
+
+/**
+ * Compresses an image and returns a Base64 data URL.
+ * This allows us to store images directly in Firestore (limit 1MB/doc) without needing Firebase Storage.
+ */
+const compressImageToBase64 = (file, maxWidth, maxHeight, quality) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                // Calculate the new dimensions
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+                }
+
+                // Draw to canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Get base64 string
+                const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                
+                // Firestore document limit is 1MB. Warn if still too large (~750KB base64 is close to 1MB)
+                if (dataUrl.length > 750000) {
+                    reject(new Error("Image is too large even after compression. Please use a smaller image."));
+                } else {
+                    resolve(dataUrl);
+                }
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
+};

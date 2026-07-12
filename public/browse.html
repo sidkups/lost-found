@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Items - Lost & Found</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .filter-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .item-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+        }
+        .item-details {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            opacity: 0.7;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">Lost<span>&</span>Found</a>
+            
+            <div class="navbar-nav" style="flex-grow: 1; margin-left: 2rem;">
+                <a href="browse.html" class="nav-link active">Browse</a>
+            </div>
+
+            <div class="navbar-nav" id="authNav">
+                <a href="login.html" class="btn btn-outline" style="width: auto;">Login</a>
+                <a href="register.html" class="btn btn-primary" style="width: auto;">Register</a>
+            </div>
+            
+            <div class="navbar-nav hidden" id="userNav" style="gap: 1rem; align-items: center;">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-outline" style="width: auto; padding: 0.5rem 1rem;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="mb-4">Browse Items</h1>
+            
+            <div class="filter-section">
+                <input type="text" id="searchInput" class="search-bar" placeholder="Search by title, description or location...">
+                
+                <div class="filter-grid">
+                    <div class="form-group mb-0">
+                        <label for="filterType">Type</label>
+                        <select id="filterType" class="form-control">
+                            <option value="all">All Types</option>
+                            <option value="lost">Lost Items</option>
+                            <option value="found">Found Items</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <label for="filterCategory">Category</label>
+                        <select id="filterCategory" class="form-control">
+                            <option value="all">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Wallets & Cards">Wallets & Cards</option>
+                            <option value="Keys">Keys</option>
+                            <option value="Documents">Documents</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Bags & Backpacks">Bags & Backpacks</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label for="filterStatus">Status</label>
+                        <select id="filterStatus" class="form-control">
+                            <option value="all">All Statuses</option>
+                            <option value="open">Open</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loadingIndicator" class="text-center mb-4">
+                <p>Loading items...</p>
+            </div>
+
+            <div id="itemsGrid" class="items-grid hidden">
+                <!-- Items will be injected here dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/browse.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyD5Z7chaFPPHfGqx84PMsWyNM-21fDLKB4",
     authDomain: "lost-found-d7880.firebaseapp.com",
     projectId: "lost-found-d7880",
-    storageBucket: "lost-found-d7880.firebasestorage.app",
+    storageBucket: "lost-found-d7880.appspot.com",
     messagingSenderId: "509636494210",
     appId: "1:509636494210:web:d5f8999a3fc8976b5ac59b",
     measurementId: "G-VLMGJQSLSD"

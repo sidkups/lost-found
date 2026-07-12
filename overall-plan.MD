@@ -35,7 +35,7 @@ This document serves as the central plan for the final year graduate project. Th
 - [x] **3.1 Define Project Management & Issue Tracking**
   - Set up a Kanban board or issue tracker.
   - Define the process for converting requirements into actionable tasks (so the agent has a clear backlog).
-- [ ] **3.2 Set up Version Control & Repository**
+- [x] **3.2 Set up Version Control & Repository**
   - Initialize Git repository.
   - Define branching strategy (e.g., Trunk-Based Development, which is often preferred for agentic workflows).
 - [ ] **3.3 Establish Test-Driven Development (TDD) Process**
